@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44db21530dcce8f479feb3245c42c5a8, type: 3}
+  m_Name: Green Bean
+  m_EditorClassIdentifier: 
+  objectName: Green Bean
+  edible: 0
+  nutrition: 600
+  diet: 0
+  maxHealth: 1000
+  maxHunger: 1000
+  maxThirst: 1000
+  attackStrength: 20
+  attackRange: 1
+  attackDPS: 2
+  walkSpeedMultiplier: 1
+  runSpeedMultiplier: 2
