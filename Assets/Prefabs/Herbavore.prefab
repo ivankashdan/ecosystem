@@ -15,6 +15,10 @@ GameObject:
   - component: {fileID: 4271831762689467957}
   - component: {fileID: 6994563873321920301}
   - component: {fileID: 2083697089871679257}
+  - component: {fileID: 2022734237223278021}
+  - component: {fileID: 8904394161672250080}
+  - component: {fileID: 8301954607826911178}
+  - component: {fileID: 3813623864157897198}
   m_Layer: 0
   m_Name: Herbavore
   m_TagString: Animal
@@ -148,8 +152,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5fefab8a533961846b6a0e930c28c13f, type: 2}
   deadState: {fileID: 44723060264379778, guid: 7b927ffabc1a57f48877540340208205, type: 3}
   hungerPerSecond: 10
-  healthPerSecond: 10
   minHunger: 700
+  healthPerSecond: 10
+  _health: 0
+  _hunger: 0
   stats: {fileID: 0}
 --- !u!114 &2083697089871679257
 MonoBehaviour:
@@ -163,7 +169,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ad5248b62a29548a7d73fb6ff4f467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderInterval: 2
-  waitToEat: 3
+  behaviour: 0
+  targetType: 0
+  target: {fileID: 0}
+--- !u!114 &2022734237223278021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44723060264379778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f79e45c19a3cc459c37cc033966310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wanderWait: 5
+  wanderRadius: 6
+--- !u!114 &8904394161672250080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44723060264379778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2bcf5b6ec41e9b47aa8b86b2a028280, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   searchRadius: 6
-  searchInterval: 3
+  searchWait: 2
+--- !u!114 &8301954607826911178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44723060264379778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a95d5ca8c9e3374c9bf7e6a2ba4b64e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fleeDistanceMultiplier: 5
+  fleeRadius: 6
+  fightRadius: 6
+--- !u!114 &3813623864157897198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44723060264379778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a2c3375994d749b5c2633daab2d9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchRadius: 6
+  searchPredatorWait: 5

@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Yellow Bean
   m_EditorClassIdentifier: 
   objectName: Yellow Bean
-  edible: 0
   nutrition: 600
   diet: 2
   maxHealth: 1000
@@ -24,3 +23,4 @@ MonoBehaviour:
   attackDPS: 2
   walkSpeedMultiplier: 1
   runSpeedMultiplier: 2
+  searchRadius: 6

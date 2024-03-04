@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //[ExecuteInEditMode]
-public class seedField : MonoBehaviour
+public class SeedField : MonoBehaviour
 {
     public GameObject grain;
 
@@ -14,13 +14,13 @@ public class seedField : MonoBehaviour
 
     private void Start()
     {
-        SeedField();
+        Seed();
     }
 
-    void SeedField()
+    void Seed()
     {
         Debug.Log("Field seeded...");
-        ClearField();
+        Clear();
 
         for (int c = 0; c < rowLength; c++)  //seed from top left 
         {
@@ -31,7 +31,7 @@ public class seedField : MonoBehaviour
             }
         }
     }
-    void ClearField()
+    void Clear()
     {
         foreach (Transform child in transform)
         {

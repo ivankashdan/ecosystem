@@ -10,15 +10,18 @@ public class AnimalStatus : MonoBehaviour
 
     [SerializeField] List<Animal> lifeCycle;
     [SerializeField] GameObject deadState;
-    [SerializeField] int hungerPerSecond = 10;
-    [SerializeField] public int minHunger = 700;
-    [SerializeField] int healthPerSecond = 10;
+    int hungerPerSecond = 10;
+    int healthPerSecond = 10;
+    [HideInInspector] public int minHunger;
 
     Coroutine hungerCoroutine;
     Coroutine starvingCoroutine;
     Coroutine flashRedCoroutine;
-    [SerializeField] int _health; 
-    [SerializeField] int _hunger;
+    int _health; 
+    int _hunger;
+
+    int flashRedDamageMin = 100;
+
     public int health
     {
         get { return _health; }
@@ -26,7 +29,7 @@ public class AnimalStatus : MonoBehaviour
             int previousValue = _health;
             _health = Mathf.Clamp(value, 0, stats.maxHealth);
 
-            if (previousValue > _health)
+            if ((previousValue - flashRedDamageMin) > _health)
             {
                 if (flashRedCoroutine == null)
                 {
@@ -50,9 +53,9 @@ public class AnimalStatus : MonoBehaviour
     {
         stats = lifeCycle[0]; //for now
 
-        //edible = age.edible;
         health = stats.maxHealth;
         hunger = 50; //temporary, set back to max...
+        minHunger = (int)(stats.maxHunger * 0.7f); //minHunger is 1/7th of maxHunger
         //thirst = age.maxThirst;
 
         hungerCoroutine = StartCoroutine(HungerPerSecond());

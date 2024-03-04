@@ -15,6 +15,10 @@ GameObject:
   - component: {fileID: 4271831762689467957}
   - component: {fileID: 6994563873321920301}
   - component: {fileID: 2083697089871679257}
+  - component: {fileID: 7774014996574189315}
+  - component: {fileID: 3208288370052646904}
+  - component: {fileID: 8131389099836375373}
+  - component: {fileID: 7463179921339370001}
   m_Layer: 0
   m_Name: Omnivore
   m_TagString: Animal
@@ -166,6 +170,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   behaviour: 0
+  targetType: 0
   target: {fileID: 0}
-  searchWait: 2
+--- !u!114 &7774014996574189315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44723060264379778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f79e45c19a3cc459c37cc033966310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wanderWait: 5
+  wanderRadius: 6
+--- !u!114 &3208288370052646904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44723060264379778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de318ea48311e74eb8f4e2c9d261740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   searchRadius: 6
+  searchWait: 2
+--- !u!114 &8131389099836375373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44723060264379778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a95d5ca8c9e3374c9bf7e6a2ba4b64e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fleeDistanceMultiplier: 5
+  fleeRadius: 6
+  fightRadius: 6
+--- !u!114 &7463179921339370001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44723060264379778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a2c3375994d749b5c2633daab2d9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchRadius: 6
+  searchPredatorWait: 5

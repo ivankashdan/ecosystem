@@ -15,6 +15,10 @@ GameObject:
   - component: {fileID: 73886920516000119}
   - component: {fileID: 6209950002793814110}
   - component: {fileID: 5565164451241176327}
+  - component: {fileID: 7785232532095905401}
+  - component: {fileID: 2984054693039590007}
+  - component: {fileID: 7400255115335183248}
+  - component: {fileID: 4303155200640812285}
   m_Layer: 0
   m_Name: Carnivore
   m_TagString: Animal
@@ -148,8 +152,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8e008d9d4b0e7784ebd62aee57f6696e, type: 2}
   deadState: {fileID: 7361794542689805791, guid: 757890bb2dee742439bc2ae2a2d6edc6, type: 3}
   hungerPerSecond: 10
-  healthPerSecond: 10
   minHunger: 700
+  healthPerSecond: 10
+  _health: 0
+  _hunger: 0
   stats: {fileID: 0}
 --- !u!114 &5565164451241176327
 MonoBehaviour:
@@ -163,7 +169,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ad5248b62a29548a7d73fb6ff4f467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderInterval: 2
-  waitToEat: 2
+  behaviour: 0
+  targetType: 0
+  target: {fileID: 0}
+--- !u!114 &7785232532095905401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7361794542689805791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f79e45c19a3cc459c37cc033966310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wanderWait: 5
+  wanderRadius: 6
+--- !u!114 &2984054693039590007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7361794542689805791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 418bbc332fe922f429341af8bedacf68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   searchRadius: 6
-  searchInterval: 3
+  searchWait: 2
+--- !u!114 &7400255115335183248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7361794542689805791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a95d5ca8c9e3374c9bf7e6a2ba4b64e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fleeDistanceMultiplier: 5
+  fleeRadius: 6
+  fightRadius: 6
+--- !u!114 &4303155200640812285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7361794542689805791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a2c3375994d749b5c2633daab2d9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchRadius: 6
+  searchPredatorWait: 5

@@ -14,10 +14,11 @@ public class Animal : Lifeform
     public int attackDPS;
     public float walkSpeedMultiplier;
     public float runSpeedMultiplier;
+    public float searchRadius;
 }
 
 public enum Diet
-{
+{   
     Herbavore = 0,
     Carnivore = 1,
     Omnivore = 2,
