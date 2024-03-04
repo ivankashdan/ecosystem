@@ -8,13 +8,13 @@ public class PlantBehaviour : LifeformBehaviour
 
     public int lifeCycleStage;
     public List<Plant> lifeCycle;
-    public Plant age;
+    public Plant stats;
 
    
 
     private void Start()
     {
-        age = lifeCycle[lifeCycleStage];
+        stats = lifeCycle[lifeCycleStage];
 
         StartCoroutine(Grow());
     }
@@ -41,7 +41,7 @@ public class PlantBehaviour : LifeformBehaviour
     {
 
         lifeCycleStage = stage;
-        age = lifeCycle[lifeCycleStage]; //need to make this automatic
+        stats = lifeCycle[lifeCycleStage]; //need to make this automatic
 
         Vector3 scale = transform.localScale;
         switch (stage)

@@ -19,9 +19,9 @@ public class Clicker : MonoBehaviour
             Ray ray = m_Camera.ScreenPointToRay(mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (hit.collider.GetComponent<AnimalBehaviour>())
+                if (hit.collider.GetComponent<AnimalStatus>())
                 {
-                    AnimalBehaviour animal = hit.collider.GetComponent<AnimalBehaviour>();
+                    AnimalStatus animal = hit.collider.GetComponent<AnimalStatus>();
 
                     selectedHUD.selected = animal;
                 }

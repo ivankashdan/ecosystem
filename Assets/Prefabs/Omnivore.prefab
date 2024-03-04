@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7361794542689805791
+--- !u!1 &44723060264379778
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,50 +8,50 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1097378987702912020}
-  - component: {fileID: 4527585630686670012}
-  - component: {fileID: 5601927731064472592}
-  - component: {fileID: 4934103869263788396}
-  - component: {fileID: 73886920516000119}
-  - component: {fileID: 6209950002793814110}
-  - component: {fileID: 5565164451241176327}
+  - component: {fileID: 2167192061075413249}
+  - component: {fileID: 8574923638385081161}
+  - component: {fileID: 563332873738364905}
+  - component: {fileID: 7202247665499175315}
+  - component: {fileID: 4271831762689467957}
+  - component: {fileID: 6994563873321920301}
+  - component: {fileID: 2083697089871679257}
   m_Layer: 0
-  m_Name: Carnivore
+  m_Name: Omnivore
   m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1097378987702912020
+--- !u!4 &2167192061075413249
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361794542689805791}
+  m_GameObject: {fileID: 44723060264379778}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.0599773, y: 1.14, z: -7.8712826}
+  m_LocalPosition: {x: 0.7001648, y: 1.2972784, z: -1.915288}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4527585630686670012
+--- !u!33 &8574923638385081161
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361794542689805791}
+  m_GameObject: {fileID: 44723060264379778}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &5601927731064472592
+--- !u!23 &563332873738364905
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361794542689805791}
+  m_GameObject: {fileID: 44723060264379778}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 045460186eb757d409b5868a429f56a2, type: 2}
+  - {fileID: 2100000, guid: 1a9b3514a06572c4f967f9921559eb24, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,13 +87,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &4934103869263788396
+--- !u!136 &7202247665499175315
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361794542689805791}
+  m_GameObject: {fileID: 44723060264379778}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -110,13 +110,13 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!195 &73886920516000119
+--- !u!195 &4271831762689467957
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361794542689805791}
+  m_GameObject: {fileID: 44723060264379778}
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
@@ -132,38 +132,40 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6209950002793814110
+--- !u!114 &6994563873321920301
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361794542689805791}
+  m_GameObject: {fileID: 44723060264379778}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 311146aa139465245a471bb65bd93595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lifeCycle:
-  - {fileID: 11400000, guid: 8e008d9d4b0e7784ebd62aee57f6696e, type: 2}
-  deadState: {fileID: 7361794542689805791, guid: 757890bb2dee742439bc2ae2a2d6edc6, type: 3}
+  - {fileID: 11400000, guid: 5f0f97d94a8d9f743acf6cc4ec616ee4, type: 2}
+  deadState: {fileID: 44723060264379778, guid: 393e5033721a8e240bb25b5ecc25f8e5, type: 3}
   hungerPerSecond: 10
-  healthPerSecond: 10
   minHunger: 700
+  healthPerSecond: 10
+  _health: 0
+  _hunger: 0
   stats: {fileID: 0}
---- !u!114 &5565164451241176327
+--- !u!114 &2083697089871679257
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361794542689805791}
+  m_GameObject: {fileID: 44723060264379778}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1ad5248b62a29548a7d73fb6ff4f467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderInterval: 2
-  waitToEat: 2
+  behaviour: 0
+  target: {fileID: 0}
+  searchWait: 2
   searchRadius: 6
-  searchInterval: 3

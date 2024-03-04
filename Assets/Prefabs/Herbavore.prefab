@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 563332873738364905}
   - component: {fileID: 7202247665499175315}
   - component: {fileID: 4271831762689467957}
+  - component: {fileID: 6994563873321920301}
   - component: {fileID: 2083697089871679257}
   m_Layer: 0
   m_Name: Herbavore
@@ -131,6 +132,25 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6994563873321920301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44723060264379778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 311146aa139465245a471bb65bd93595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeCycle:
+  - {fileID: 11400000, guid: 5fefab8a533961846b6a0e930c28c13f, type: 2}
+  deadState: {fileID: 44723060264379778, guid: 7b927ffabc1a57f48877540340208205, type: 3}
+  hungerPerSecond: 10
+  healthPerSecond: 10
+  minHunger: 700
+  stats: {fileID: 0}
 --- !u!114 &2083697089871679257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,17 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ad5248b62a29548a7d73fb6ff4f467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 0
-  _hunger: 0
-  minHunger: 700
-  hungerPerSecond: 10
   wanderInterval: 2
-  waitAfterKill: 3
   waitToEat: 3
   searchRadius: 6
   searchInterval: 3
-  lifeCycleStage: 0
-  lifeCycle:
-  - {fileID: 11400000, guid: 5fefab8a533961846b6a0e930c28c13f, type: 2}
-  age: {fileID: 0}
-  deadState: {fileID: 44723060264379778, guid: 7b927ffabc1a57f48877540340208205, type: 3}

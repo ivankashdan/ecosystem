@@ -4,388 +4,370 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AnimalBehaviour : LifeformBehaviour
+[RequireComponent(typeof(AnimalStatus))]
+[RequireComponent(typeof(NavMeshAgent))]
+public class AnimalBehaviour : MonoBehaviour
 {
-    NavMeshAgent agent;
-
-    [SerializeField] int _health;
-    public int health
+    private enum Behaviour
     {
-        get { return _health; }
-        set
-        {
-            if (_health > value)
-            {
-                StartCoroutine(FlashRed());
-            }
-            if (value > age.maxHealth)
-            {
-                _health = age.maxHealth;
-            }
-            else if (value <= 0)
-            {
-                _health = 0;
-
-                Died();
-            }
-            else
-            {
-                _health = value;
-            }
-        }
+        Wandering,
+        SearchingForFood,
+        Investigating,
+        Eating,
+        Chasing,
+        Fleeing,
+        Fighting
     }
 
-    [SerializeField] int _hunger;
-    public int hunger
-    {
-        get { return _hunger; }
-        set
-        {
-            if (value > age.maxHunger)
-            {
-                _hunger = age.maxHunger;
-            }
-            else if (value <= 0)
-            {
-                _hunger = 0;
+    [SerializeField] private Behaviour behaviour;
+    private AnimalStatus status;
+    private NavMeshAgent agent;
+    float baseSpeed;
+    float runSpeed;
 
-                if (starvingCoroutine == null)
-                {
-                    starvingCoroutine = StartCoroutine(HealthPerSecond());
-                }
-            }
-            else
+    [SerializeField] private Transform target;
+    [SerializeField] private Transform danger;
+
+    private void Update()
+    {
+        Behaviour lastBehaviour = behaviour;
+
+        if (target == null)
+        {
+            if (agent.speed == runSpeed)
             {
-                _hunger = value;
+                agent.speed = baseSpeed;
             }
         }
-    }
 
 
-    int _thirst;
-    public float thirst { get; set; }
+        if (status.hunger >= status.minHunger)
+        {
+            behaviour = Behaviour.Wandering;
+        }
+        else if (target == null)
+        {
+            behaviour = Behaviour.SearchingForFood;
+        }
+        
+        //if (danger == null)
+        //{
+        //    SearchPredator();
+        //}
 
-    bool hungry = false;
+        switch (behaviour)
+        {
+            case Behaviour.Wandering:
+                Wander();
+                break;
+            case Behaviour.SearchingForFood:
+                Search();
+                break;
+            case Behaviour.Investigating:
+                GoEatFood(target);
+                break;
+            case Behaviour.Eating:
+                EatFood(target);
+                break;
+            case Behaviour.Chasing:
+                Chase(target);
+                break;
+            case Behaviour.Fleeing:
+                Flee(danger); 
+                break;
+            case Behaviour.Fighting:
+                Attack(target);
+                break;
+        }
 
-    public int minHunger = 700;
-    public int hungerPerSecond = 10;
-    public int healthPerSecond = 10;
+        if (behaviour != lastBehaviour)
+        {
+            DebugBehaviour(behaviour.ToString());
+        }
 
-    public int wanderInterval = 2;
-    public int waitToEat = 2;
-
-    public float searchRadius = 6f;
-    public int searchInterval = 3;
-
-    public int lifeCycleStage;
-    public List<Animal> lifeCycle;
-    public GameObject deadState;
-    public Animal age;
-
-    bool edible = false;
-    
-    Coroutine doDamageCoroutine;
-    Coroutine starvingCoroutine;
-
-    //public delegate void animalDied();
-    //public event animalDied AnimalDied;
-
-    
-
-    IEnumerator FlashRed()
-    {
-        Renderer renderer = transform.GetComponent<Renderer>();
-        Color original = renderer.material.color;
-        renderer.material.color = Color.red;
-
-        yield return new WaitForSeconds(0.1f);
-
-        renderer.material.color = original;
     }
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
-        age = lifeCycle[lifeCycleStage];
-
-        edible = age.edible;
-        health = age.maxHealth;
-        hunger = 800; //temporary, set back to max...
-        thirst = age.maxThirst;
-
-        StartCoroutine(HungerPerSecond());
-        StartCoroutine(Wander());
+        status = GetComponent<AnimalStatus>();
+        behaviour = Behaviour.Wandering;
+        baseSpeed = agent.speed * status.stats.walkSpeedMultiplier;
+        runSpeed = agent.speed * status.stats.runSpeedMultiplier;
     }
 
-    IEnumerator HungerPerSecond()
-    {
-        while(true)
-        {
-            hunger -= hungerPerSecond;
 
-            if (hunger < minHunger)
+    float wanderTimePassed = 0;
+    float wanderWait = 5.0f;
+
+
+
+    void Wander()
+    {
+        wanderTimePassed += Time.deltaTime;
+
+        if (wanderTimePassed > wanderWait)
+        {
+            wanderTimePassed = 0;
+
+            if (agent.remainingDistance < 0.1f)
             {
-                hungry = true;
+                agent.destination = transform.position + (Random.insideUnitSphere * searchRadius);
             }
-            else if (hunger >= minHunger)
+        }
+
+    }
+
+    float searchTimePassed = 0;
+    [SerializeField] float searchWait = 2.0f;
+    [SerializeField] float searchRadius = 6f;
+    void Search()
+    {
+        searchTimePassed += Time.deltaTime;
+
+        if (searchTimePassed > searchWait)
+        {
+            searchTimePassed = 0;
+
+            SearchForFood(status.stats.diet);
+
+            if (target == null)
             {
-                hungry = false;
+                agent.destination = transform.position + (Random.insideUnitSphere * searchRadius);
             }
-                
-            yield return new WaitForSeconds(1);
+        }
+    }
+
+    float searchPredatorTimePassed = 0;
+    [SerializeField] float searchPredatorWait = 5.0f;
+    
+    void SearchPredator()
+    {
+        searchPredatorTimePassed += Time.deltaTime;
+
+        if (searchPredatorTimePassed > searchPredatorWait)
+        {
+            searchPredatorTimePassed = 0;
+
+            SearchForPredator();
         }
     }
 
-    IEnumerator HealthPerSecond()
+    void SearchForPredator()
     {
-        while (hunger <= 0)
-        {
-            health -= healthPerSecond;
-
-            yield return new WaitForSeconds(1);
-        }
-        StopCoroutine(starvingCoroutine);
-        starvingCoroutine = null;
-    }
-
-    IEnumerator Wander()
-    {
-        bool wandering = true;
-
-        while (wandering)
-        {
-            if (hungry)
-            {
-                StartCoroutine(SearchForFood());
-                wandering = false;
-            }
-            else
-            {
-                
-                RandomDestination();
-            }
-
-            yield return new WaitForSeconds(wanderInterval);
-        }
-
-    }
-
-    IEnumerator SearchForFood()
-    {
-        bool searching = true;
-
-        if (hungry)
-        {
-            while (searching)
-            {
-                DebugCarnivore("Searching...");
-
-                Transform target = Search();
-
-                if (target != null)
-                {
-                    if (target.CompareTag("Plant"))
-                    {
-                        StartCoroutine(GoEatFood(target));
-                    }
-                    else if (target.CompareTag("Animal")) //replace with tag checks
-                    {
-                        if (target.GetComponent<ConsumableBehaviour>())
-                        {
-                            StartCoroutine(GoEatFood(target));
-                        }
-                        else if (target.GetComponent<AnimalBehaviour>())
-                        {
-                            StartCoroutine(AttackTarget(target));
-                        }
-                    }
-
-                    searching = false;
-                    yield break;
-
-                }
-                else
-                {
-                    RandomDestination();
-                }
-
-                yield return new WaitForSeconds(searchInterval);
-            }
-        }
-        else
-        {
-            StartCoroutine(Wander());
-        }
-    }
-
-    void RandomDestination()
-    {
-        DebugCarnivore("Wandering...");
-        //agent.destination = transform.position;
-        agent.destination = transform.position + (Random.insideUnitSphere * searchRadius);
-    }
-  
-
-    private Transform Search()
-    {
-
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, searchRadius); //search all colliders in sphere
 
-        List<Transform> hitEdibles = new List<Transform>();
-
-        foreach (Collider collider in hitColliders)
+        if (hitColliders.Length > 0)
         {
-            if (collider.transform != this.transform) //check it's not self!
-            {
+            List<Transform> hitPredators = new List<Transform>();
 
-                if (age.diet == Diet.Herbavore || age.diet == Diet.Omnivore)
+            foreach (Collider collider in hitColliders)
+            {
+                if (collider.transform != this.transform) //check it's not self!
                 {
-                    if (collider.CompareTag("Plant"))
+                    if (collider.CompareTag("Animal"))
                     {
-                        if (collider.GetComponent<PlantBehaviour>().age.edible)
+                        Diet diet = collider.GetComponent<AnimalStatus>().stats.diet;
+                        if (diet == Diet.Carnivore || diet == Diet.Omnivore)
+                        {
+                            hitPredators.Add(collider.transform);
+                        }
+                    }
+                }
+            }
+
+            if (hitPredators.Count != 0)
+            {
+                danger = FindClosest(hitPredators);
+
+                if (danger != null)
+                {
+                    behaviour = Behaviour.Fleeing;
+                }
+            }
+        }
+    }
+
+    void Flee(Transform danger)
+    {
+        target = null;
+
+        if (agent.speed == baseSpeed)
+        {
+            agent.speed = runSpeed;
+        }
+        agent.destination -= danger.position*2;
+
+        float distance = Vector3.Distance(transform.position, danger.position);
+
+        if (distance > searchRadius) //collide if inside collider
+        {
+            this.danger = null;
+        }
+    }
+
+    private void SearchForFood(Diet diet)
+    {
+       
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, searchRadius); //search all colliders in sphere
+       
+        if (hitColliders.Length > 0)
+        {
+            List<Transform> hitEdibles = new List<Transform>();
+
+            foreach (Collider collider in hitColliders)
+            {
+                if (collider.transform != this.transform) //check it's not self!
+                {
+                    if (diet == Diet.Herbavore || diet == Diet.Omnivore)
+                    {
+                        if (collider.CompareTag("Plant"))
+                        {
+                            if (collider.GetComponent<PlantBehaviour>().stats.edible)
+                            {
+                                hitEdibles.Add(collider.transform);
+                            }
+                        }
+                    }
+
+                    if (diet == Diet.Carnivore || diet == Diet.Omnivore)
+                    {
+                        if (collider.CompareTag("Meat"))
                         {
                             hitEdibles.Add(collider.transform);
                         }
                     }
                 }
-                if (age.diet == Diet.Carnivore || age.diet == Diet.Omnivore)
-                {
-                    if (collider.CompareTag("Animal"))
-                    {
-                        hitEdibles.Add(collider.transform);
-                    }
-                }
+            }
+
+            if (hitEdibles.Count != 0) //if none found
+            {
+                target = FindClosest(hitEdibles);
+                behaviour = Behaviour.Investigating;
+            }
+            else if (diet == Diet.Carnivore || diet == Diet.Omnivore)
+            {
+                SearchForPrey(hitColliders);
             }
         }
-
-        if (hitEdibles.Count == 0)
-        {
-            return null;
-        }
-
-        return FindClosest(hitEdibles);
+        
 
     }
 
-    Transform FindClosest(List<Transform> hitEdibles)
+  
+
+    void SearchForPrey(Collider[] hitColliders)
+    {
+        List<Transform> hitPrey = new List<Transform>();
+        foreach (Collider collider in hitColliders)
+        {
+            if (collider.transform != this.transform) //check it's not self!
+            {
+                if (collider.CompareTag("Animal"))
+                {
+                    hitPrey.Add(collider.transform);
+                }
+            }
+        }
+        if (hitPrey.Count != 0)
+        {
+            target = FindClosest(hitPrey);
+            behaviour = Behaviour.Chasing;
+        }
+    }
+
+   
+
+    Transform FindClosest(List<Transform> hitList)
     {
         float closestDistance = searchRadius;
         Transform closestTarget = null;
 
-        foreach (Transform edible in hitEdibles)
+        foreach (Transform hit in hitList)
         {
-            float distance = Vector3.Distance(edible.position, this.transform.position);
+            float distance = Vector3.Distance(hit.position, this.transform.position);
 
             if (distance < closestDistance)
             {
                 closestDistance = distance;
-                closestTarget = edible;
+                closestTarget = hit;
             }
 
         }
+        //Debug.Log($"closest target to {transform.name} is: {closestTarget.transform}");
+        
         if (closestTarget != null)
         {
             return closestTarget.transform;
         }
-        else
-        {
-            return null;
-        }
-
+        else { return null; }   
     }
 
-    IEnumerator AttackTarget(Transform target)
+    void GoEatFood(Transform target)
     {
-        DebugCarnivore("Attacking " + target.name);
+        agent.destination = target.position;
 
-        AnimalBehaviour prey = target.GetComponent<AnimalBehaviour>();
-
-        doDamageCoroutine = StartCoroutine(DamageTarget(target));
-
-
-        while (prey.health > 0) //continually update enemy position
+        if (agent.remainingDistance < status.stats.attackRange) //collide if inside collider
         {
-            agent.destination = target.position; //keep attacking
-
-            yield return new WaitForSeconds(1);
-        }
-
-        StartCoroutine(SearchForFood());
-        StopCoroutine(doDamageCoroutine);
-    }
-
-    IEnumerator DamageTarget(Transform target)
-    {
-        AnimalBehaviour prey = target.GetComponent<AnimalBehaviour>();
-
-        while (prey.health > 0)
-        {
-            if (agent.remainingDistance < age.attackRange) //collide if inside collider
-            {
-
-                DebugCarnivore("Damaging " + target.name);
-                prey.health -= age.attackStrength;
-
-                yield return new WaitForSeconds(age.attackDPS);
-            }
+            behaviour = Behaviour.Eating;
         }
     }
 
-    IEnumerator GoEatFood(Transform target)
+    void EatFood(Transform target)
     {
-        bool goingToEat = true;
 
-        if (hungry)
+        if (target.CompareTag("Meat"))
         {
-            DebugCarnivore("Going to eat " + target.name);
-
-            while (goingToEat)
-            {
-                agent.destination = target.position;
-
-                if (agent.remainingDistance < age.attackRange) //collide if inside collider
-                {
-                    StartCoroutine(EatFood(target));
-                    goingToEat = false;
-                    yield return new WaitForSeconds(waitToEat);
-                }
-                yield return new WaitForSeconds(1);
-            }
-        }
-        StartCoroutine(Wander());
-    }
-
-
-    IEnumerator EatFood(Transform target)
-    {
-        DebugCarnivore("Ate " + target.name);
-
-        if (target.CompareTag("Animal"))
-        {
-            yield return new WaitForSeconds(waitToEat);
             ConsumableBehaviour corpse = target.GetComponent<ConsumableBehaviour>();
-            hunger += corpse.age.nutrition;
+            status.hunger += corpse.age.nutrition;
             Destroy(corpse.gameObject);
+            
         }
         else if (target.CompareTag("Plant"))
         {
-            yield return new WaitForSeconds(waitToEat);
             PlantBehaviour food = target.GetComponent<PlantBehaviour>();
-            hunger += food.age.nutrition;
+            status.hunger += food.stats.nutrition;
             food.Eaten();
+;       }
+        this.target = null;
+    }
+
+    void Chase(Transform target)
+    {
+        if (agent.speed == baseSpeed)
+        {
+            agent.speed = runSpeed;
+        }
+        agent.destination = target.position;
+
+        if (agent.remainingDistance < status.stats.attackRange) //collide if inside collider
+        {
+            behaviour = Behaviour.Fighting;
         }
     }
 
-    public void Died() //temporary code //or better yet, instantiate a dead bean
+ 
+
+    float attackTimePassed = 0;
+    void Attack(Transform target)
     {
-        //AnimalDied();
-        Destroy(gameObject);
-        GameObject corpse = Instantiate(deadState, transform.position, transform.rotation, transform.parent);
-        ConsumableBehaviour consumabale = corpse.GetComponent<ConsumableBehaviour>();
-        consumabale.age = age;
-        corpse.name = consumabale.age.objectName + (" (Dead)");
-        
+        attackTimePassed += Time.deltaTime;
+
+        AnimalStatus prey = target.GetComponent<AnimalStatus>();
+        if (prey.health > 0) //continually update enemy position
+        {
+            agent.destination = target.position; //keep attacking
+            if (attackTimePassed > status.stats.attackDPS)
+            {
+                attackTimePassed = 0;
+                //Debug.Log($"Damage = {status.stats.attackStrength}");
+                prey.health -= status.stats.attackStrength;
+            }
+        }
+        else
+        {
+            behaviour = Behaviour.SearchingForFood;
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -394,12 +376,11 @@ public class AnimalBehaviour : LifeformBehaviour
         Gizmos.DrawWireSphere(transform.position, searchRadius);
     }
 
-    void DebugCarnivore(string s)
+    void DebugBehaviour(string s)
     {
-        if (age.diet == Diet.Carnivore)
-        {
-            Debug.Log("Carnivore: " + s);
-        }
+        
+        Debug.Log($"{status.stats.diet}: " + s);
+        
     }
 
 

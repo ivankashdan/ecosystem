@@ -6,6 +6,5 @@ using UnityEngine;
 public class Lifeform : ScriptableObject
 {
     public string objectName;
-    public bool edible;
     public int nutrition;
 }

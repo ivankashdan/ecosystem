@@ -8,8 +8,8 @@ public class SelectedHUD : MonoBehaviour
     public Text objectName;
     public Slider healthBar; 
     public Slider hungerBar;
-    private AnimalBehaviour _selected;
-    public AnimalBehaviour selected //logic for when selected is changed
+    private AnimalStatus _selected;
+    public AnimalStatus selected //logic for when selected is changed
     {
         get { return _selected; }
         set 
@@ -19,24 +19,20 @@ public class SelectedHUD : MonoBehaviour
 
                 if (_selected != null)
                 {
-                    //selected.AnimalDied -= HandleSelectedDeath;
-                    //Debug.Log("unsubscribed");
-                    CancelHighlight();
+                    //CancelHighlight();
                 }
             }
             _selected = value; //second pass, actions on new value
 
             if (_selected == null)
             {
-                //CancelHighlight(); still need logic for this?
                 Hide();
             }
             else
             {
-                objectName.text = _selected.age.objectName; //set selected name
-                //selected.AnimalDied += HandleSelectedDeath;
-                //Debug.Log("subscribed to animal death...");
-                HighlightObject();
+                objectName.text = _selected.stats.objectName; //set selected name
+           
+                //HighlightObject();
                 Show();
             }
         }
@@ -46,12 +42,6 @@ public class SelectedHUD : MonoBehaviour
     Color _originalColor;
 
 
-    public void HandleSelectedDeath()
-    {
-        Hide();
-        //selected.AnimalDied -= HandleSelectedDeath;
-        //Debug.Log("unsubscribed");
-    }
 
     private void Start()
     {
@@ -64,19 +54,25 @@ public class SelectedHUD : MonoBehaviour
     {
         if (selected != null)
         {
-            healthBar.value = (float)selected.health / selected.age.maxHealth;
-            hungerBar.value = (float)selected.hunger / selected.age.maxHunger;
+            healthBar.value = (float)selected.health / selected.stats.maxHealth;
+            hungerBar.value = (float)selected.hunger / selected.stats.maxHunger;
+        }
+        else
+        {
+            Hide();
         }
     }
 
-    void Hide()
+    public void Hide()
     {
+        //gameObject.SetActive(false);
         _canvasGroup.alpha = 0f; 
         _canvasGroup.blocksRaycasts = false; 
     }
 
-    void Show()
+    public void Show()
     {
+        //gameObject.SetActive(true);
         _canvasGroup.alpha = 1f;
         _canvasGroup.blocksRaycasts = true;
     }

@@ -6,7 +6,6 @@ using UnityEngine;
 public class Plant : Lifeform
 {
 
-
-
+    public bool edible;
 
 }

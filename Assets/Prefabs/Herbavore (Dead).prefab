@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -7873267745590700300}
   m_Layer: 0
   m_Name: Herbavore (Dead)
-  m_TagString: Animal
+  m_TagString: Meat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,3 +148,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56df83a96c1be444586f73b6f91a6e4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  age: {fileID: 0}
