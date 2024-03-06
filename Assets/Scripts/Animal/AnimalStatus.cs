@@ -13,6 +13,7 @@ public class AnimalStatus : MonoBehaviour
     int hungerPerSecond = 10;
     int healthPerSecond = 10;
     [HideInInspector] public int minHunger;
+    [HideInInspector] public int minHealth;
 
     Coroutine hungerCoroutine;
     Coroutine starvingCoroutine;
@@ -54,12 +55,16 @@ public class AnimalStatus : MonoBehaviour
         stats = lifeCycle[0]; //for now
 
         health = stats.maxHealth;
-        hunger = 50; //temporary, set back to max...
-        minHunger = (int)(stats.maxHunger * 0.7f); //minHunger is 1/7th of maxHunger
+        hunger = 700; //stats.maxHunger; //temporary, set back to max...
+        minHunger = (stats.maxHunger * 7)/10; 
+        minHealth = (stats.maxHealth * 3)/10;
         //thirst = age.maxThirst;
+        Debug.Log(minHealth);
 
         hungerCoroutine = StartCoroutine(HungerPerSecond());
     }
+
+  
 
     private void Update()
     {
@@ -118,14 +123,16 @@ public class AnimalStatus : MonoBehaviour
         flashRedCoroutine = null;
     }
 
-    public void Die() 
-    {
-        //AnimalDied();
-        GameObject corpse = Instantiate(deadState, transform.position, transform.rotation, transform.parent);
-        ConsumableBehaviour consumabale = corpse.GetComponent<ConsumableBehaviour>();
-        consumabale.age = stats;
-        corpse.name = consumabale.age.objectName + (" (Dead)");
-        Destroy(gameObject);
 
+
+    public void Die()
+    {
+        Destroy(gameObject);
+        GameObject corpse = Instantiate(deadState, transform.position, transform.rotation, transform.parent);
+        CorpseBehaviour corpseComponent = corpse.GetComponent<CorpseBehaviour>();
+        corpseComponent.stats = stats;
+        corpse.name = stats.objectName + (" (Dead)");
     }
+
+   
 }

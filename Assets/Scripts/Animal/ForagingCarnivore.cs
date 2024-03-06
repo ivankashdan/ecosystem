@@ -18,7 +18,7 @@ public class ForagingCarnivore : Foraging
         }
         else
         {
-            foodList = SearchFor("Animal");
+            foodList = CheckForSmaller(SearchFor("Animal"));
 
             if (foodList != null)
             {
@@ -29,8 +29,29 @@ public class ForagingCarnivore : Foraging
 
     protected override void EatFood(Transform target)
     {
-        ConsumableBehaviour corpse = target.GetComponent<ConsumableBehaviour>();
-        status.hunger += corpse.age.nutrition;
+        CorpseBehaviour corpse = target.GetComponent<CorpseBehaviour>();
+        status.hunger += corpse.stats.nutrition;
         Destroy(corpse.gameObject);
     }
+
+    List<Transform> CheckForSmaller(List<Transform> foodList)
+    {
+        if (foodList != null)
+        {
+            List<Transform> smallerAnimals = new List<Transform>();
+            foreach (Transform other in foodList)
+            {
+                if (!IsOtherBigger(other))
+                {
+                    smallerAnimals.Add(other.transform);
+                }
+            }
+            if (smallerAnimals.Count > 0)
+            {
+                return smallerAnimals;
+            }
+        }
+        return null;
+    }
+
 }

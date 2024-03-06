@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConsumableBehaviour : MonoBehaviour
+public class CorpseBehaviour : MonoBehaviour
 {
-    public Animal age;
     Rigidbody rb;
-
+    [HideInInspector] public Animal stats;
 
     private void Awake()
     {

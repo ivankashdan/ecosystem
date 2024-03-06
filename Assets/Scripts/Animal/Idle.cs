@@ -3,13 +3,12 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(AnimalStatus))]
+//[RequireComponent(typeof(NavMeshAgent))]
+//[RequireComponent(typeof(AnimalStatus))]
 public class Idle : MonoBehaviour
 {
 
     [SerializeField] float wanderWait = 5.0f;
-    //[SerializeField] float wanderRadius = 6.0f;
     float wanderTimePassed = 0;
 
     NavMeshAgent agent;

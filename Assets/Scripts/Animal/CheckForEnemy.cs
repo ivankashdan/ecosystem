@@ -1,20 +1,11 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(AnimalBehaviour))]
 public class CheckForEnemy : SearchBehaviour //need to improve this for carnivores
 {
-    [SerializeField] float searchPredatorWait = 5.0f;
+    [SerializeField] float searchPredatorWait = 1.0f;
     float searchPredatorTimePassed = 0;
-
-    AnimalBehaviour animal;
-
-    private void Start()
-    {
-        animal = GetComponent<AnimalBehaviour>();
-    }
 
     public void Search()
     {
@@ -46,8 +37,7 @@ public class CheckForEnemy : SearchBehaviour //need to improve this for carnivor
             List<Transform> predators = new List<Transform>();
             foreach (Transform other in animalList)
             {
-                Diet otherDiet = other.GetComponent<AnimalStatus>().stats.diet;
-                if (otherDiet == Diet.Carnivore || otherDiet == Diet.Omnivore)
+                if (IsOtherBigger(other) && IsOtherPredator(other))
                 {
                     predators.Add(other.transform);
                 }
@@ -60,5 +50,16 @@ public class CheckForEnemy : SearchBehaviour //need to improve this for carnivor
         return null;
     }
 
+ 
 
+    bool IsOtherPredator(Transform other)
+    {
+        Diet otherDiet = other.GetComponent<AnimalStatus>().stats.diet;
+        if (otherDiet == Diet.Carnivore || otherDiet == Diet.Omnivore)
+        {
+            return true;
+        }
+        return false;
+    }
+    
 }

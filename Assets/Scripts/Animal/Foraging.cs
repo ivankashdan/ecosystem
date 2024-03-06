@@ -2,23 +2,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(AnimalBehaviour))]
-[RequireComponent (typeof(Idle))]
+//[RequireComponent (typeof(Idle))]
 public abstract class Foraging : SearchBehaviour
 {
 
     [SerializeField] float searchWait = 2.0f;
     float searchTimePassed = 0;
 
-    NavMeshAgent agent;
-    protected AnimalBehaviour animal;
     Idle idle;
 
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        animal = GetComponent<AnimalBehaviour>();
         idle = GetComponent<Idle>();
     }
 

@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 2984054693039590007}
   - component: {fileID: 7400255115335183248}
   - component: {fileID: 4303155200640812285}
+  - component: {fileID: 4105129154808890053}
+  - component: {fileID: -2182536648628007003}
   m_Layer: 0
   m_Name: Carnivore
   m_TagString: Animal
@@ -150,12 +152,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeCycle:
   - {fileID: 11400000, guid: 8e008d9d4b0e7784ebd62aee57f6696e, type: 2}
-  deadState: {fileID: 7361794542689805791, guid: 757890bb2dee742439bc2ae2a2d6edc6, type: 3}
-  hungerPerSecond: 10
+  deadState: {fileID: 7361794542689805791, guid: 4c40ac037ab38b34bbc9afe34d548678, type: 3}
   minHunger: 700
-  healthPerSecond: 10
-  _health: 0
-  _hunger: 0
+  minHealth: 0
   stats: {fileID: 0}
 --- !u!114 &5565164451241176327
 MonoBehaviour:
@@ -169,9 +168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ad5248b62a29548a7d73fb6ff4f467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behaviour: 0
-  targetType: 0
-  target: {fileID: 0}
 --- !u!114 &7785232532095905401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wanderWait: 5
-  wanderRadius: 6
 --- !u!114 &2984054693039590007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,7 +193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 418bbc332fe922f429341af8bedacf68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchRadius: 6
   searchWait: 2
 --- !u!114 &7400255115335183248
 MonoBehaviour:
@@ -212,9 +206,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a95d5ca8c9e3374c9bf7e6a2ba4b64e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fleeDistanceMultiplier: 5
-  fleeRadius: 6
-  fightRadius: 6
 --- !u!114 &4303155200640812285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,5 +218,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd1a2c3375994d749b5c2633daab2d9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchRadius: 6
   searchPredatorWait: 5
+--- !u!114 &4105129154808890053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7361794542689805791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0fbecb664c2af345b6df968e7326715, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fleeDistanceMultiplier: 30
+  fleeWait: 2
+--- !u!114 &-2182536648628007003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7361794542689805791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483a4cfc01e34ef41a37c03eef4d18d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

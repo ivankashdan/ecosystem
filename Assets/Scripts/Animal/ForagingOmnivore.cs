@@ -36,8 +36,8 @@ public class ForagingOmnivore : Foraging
     {
         if (target.CompareTag("Meat"))
         {
-            ConsumableBehaviour corpse = target.GetComponent<ConsumableBehaviour>();
-            status.hunger += corpse.age.nutrition;
+            CorpseBehaviour corpse = target.GetComponent<CorpseBehaviour>();
+            status.hunger += corpse.stats.nutrition;
             Destroy(corpse.gameObject);
 
         }

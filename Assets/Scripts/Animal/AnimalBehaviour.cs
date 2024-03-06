@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,8 +7,8 @@ public enum Behaviour
 {
     Wandering,
     SearchingForFood,
-    Investigating, //change to Eating
-    Chasing, //change to Fighting
+    Eating,
+    Fighting, 
     Fleeing,
 }
 
@@ -19,12 +20,14 @@ public enum Target
     Threat,
 }
 
-[RequireComponent(typeof(AnimalStatus))]
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(Idle))]
-[RequireComponent(typeof(Foraging))]
-[RequireComponent(typeof(Fighting))]
-[RequireComponent(typeof(CheckForEnemy))]
+//[RequireComponent(typeof(AnimalStatus))]
+//[RequireComponent(typeof(NavMeshAgent))]
+//[RequireComponent(typeof(Idle))]
+//[RequireComponent(typeof(Foraging))]
+//[RequireComponent(typeof(Fighting))]
+//[RequireComponent(typeof(Fleeing))]
+//[RequireComponent(typeof(CheckForEnemy))]
+//[RequireComponent(typeof(SpeedBehaviour))]
 
 public class AnimalBehaviour : MonoBehaviour
 {
@@ -37,11 +40,8 @@ public class AnimalBehaviour : MonoBehaviour
     private Idle idle;
     private Foraging forage;
     private Fighting fight;
+    private Fleeing flee;
     private CheckForEnemy enemyCheck;
-
-
-    //[SerializeField] public float searchRadius = 6.0f;
-
 
     private void Start()
     {
@@ -50,14 +50,21 @@ public class AnimalBehaviour : MonoBehaviour
         idle = GetComponent<Idle>();
         forage = GetComponent<Foraging>();
         fight = GetComponent<Fighting>();
+        flee = GetComponent<Fleeing>();
         enemyCheck = GetComponent<CheckForEnemy>();
 
+
         behaviour = Behaviour.Wandering;
+
+        DebugBehaviour(transform.localScale.magnitude.ToString());
     }
+
+    
 
     private void Update()
     {
         Behaviour lastBehaviour = behaviour;
+        Transform lastTarget = target;
 
         enemyCheck.Search(); //keeping searching behaviour on always (???)
 
@@ -79,13 +86,22 @@ public class AnimalBehaviour : MonoBehaviour
                 }
                 break;
             case Target.Food:
-                behaviour = Behaviour.Investigating; //investigate if new food target
+                behaviour = Behaviour.Eating; //investigate if new food target
                 break;
             case Target.Prey:
-                behaviour = Behaviour.Chasing; //chase if new prey target
+                behaviour = Behaviour.Fighting; //chase if new prey target
                 break;
             case Target.Threat:
-                behaviour = Behaviour.Fleeing; //flee if threat detected 
+                if (status.health < status.minHealth)
+                {
+                    DebugBehaviour("Self defense activated");
+                    targetType = Target.Prey;
+                    
+                }
+                else
+                {
+                    behaviour = Behaviour.Fleeing;
+                } //flee if threat detected 
                                                //put some conditions down for self-defense!
                 break;
         }
@@ -98,14 +114,14 @@ public class AnimalBehaviour : MonoBehaviour
             case Behaviour.SearchingForFood:
                 forage.Search();
                 break;
-            case Behaviour.Investigating:
+            case Behaviour.Eating:
                 forage.GoEatFood();
                 break;
-            case Behaviour.Chasing:
-                fight.Chase(); //Attack, strike?
+            case Behaviour.Fighting:
+                fight.Attack();
                 break;
             case Behaviour.Fleeing:
-                fight.Flee(); 
+                flee.Flee(); 
                 break;
             
         }
@@ -114,7 +130,17 @@ public class AnimalBehaviour : MonoBehaviour
         {
             DebugBehaviour(behaviour.ToString());
         }
+        if (target != null)
+        {
+            if (target != lastTarget)
+            {
+                DebugBehaviour($"New target - {target.name} ({targetType.ToString()})");
+            }
+        }
+        
     }
+
+
 
     public Behaviour GetBehaviour()
     {
