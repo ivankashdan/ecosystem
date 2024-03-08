@@ -8,7 +8,7 @@ using UnityEngine.AI;
 //[RequireComponent(typeof(AnimalStatus))]
 //[RequireComponent(typeof(AnimalBehaviour))]
 
-public class SpeedBehaviour : MonoBehaviour
+public class SpeedBehaviour : MonoBehaviour, IBehaviour
 {
     float baseSpeed;
     float runSpeed;

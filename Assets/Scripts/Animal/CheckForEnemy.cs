@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckForEnemy : SearchBehaviour //need to improve this for carnivores
+public class CheckForEnemy : SearchBehaviour, IBehaviour
 {
     [SerializeField] float searchPredatorWait = 1.0f;
     float searchPredatorTimePassed = 0;

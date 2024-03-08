@@ -23,6 +23,11 @@ public class AnimalStatus : MonoBehaviour
 
     int flashRedDamageMin = 100;
 
+    AnimalBehaviour animal;
+
+    Renderer renderer;
+    Color original;
+
     public int health
     {
         get { return _health; }
@@ -52,6 +57,11 @@ public class AnimalStatus : MonoBehaviour
 
     private void Awake()
     {
+        animal = GetComponent<AnimalBehaviour>();
+
+        renderer = GetComponentInChildren<Renderer>(); //could still put renderer on top level?
+        original = renderer.material.color;
+
         stats = lifeCycle[0]; //for now
 
         health = stats.maxHealth;
@@ -85,7 +95,7 @@ public class AnimalStatus : MonoBehaviour
         }
         if (health == 0)
         {
-            Die();
+            animal.KillAnimal();
         }
     }
 
@@ -109,12 +119,10 @@ public class AnimalStatus : MonoBehaviour
         }
     }
 
-    
+
 
     IEnumerator FlashRed()
     {
-        Renderer renderer = transform.GetComponent<Renderer>();
-        Color original = renderer.material.color;
         renderer.material.color = Color.red;
 
         yield return new WaitForSeconds(0.1f);
@@ -123,16 +131,11 @@ public class AnimalStatus : MonoBehaviour
         flashRedCoroutine = null;
     }
 
-
-
-    public void Die()
+    private void OnDestroy()
     {
-        Destroy(gameObject);
-        GameObject corpse = Instantiate(deadState, transform.position, transform.rotation, transform.parent);
-        CorpseBehaviour corpseComponent = corpse.GetComponent<CorpseBehaviour>();
-        corpseComponent.stats = stats;
-        corpse.name = stats.objectName + (" (Dead)");
+        renderer.material.color = original;
     }
+
 
    
 }

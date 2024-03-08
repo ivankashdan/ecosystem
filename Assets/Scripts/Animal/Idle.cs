@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 //[RequireComponent(typeof(NavMeshAgent))]
 //[RequireComponent(typeof(AnimalStatus))]
-public class Idle : MonoBehaviour
+public class Idle : MonoBehaviour, IBehaviour
 {
 
     [SerializeField] float wanderWait = 5.0f;

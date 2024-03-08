@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Fleeing : SearchBehaviour
+public class Fleeing : SearchBehaviour, IBehaviour
 {
     [SerializeField] float fleeDistanceMultiplier = 30.0f;
     [SerializeField] float fleeWait = 2.0f;

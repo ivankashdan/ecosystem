@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,14 +21,14 @@ public enum Target
     Threat,
 }
 
-//[RequireComponent(typeof(AnimalStatus))]
-//[RequireComponent(typeof(NavMeshAgent))]
-//[RequireComponent(typeof(Idle))]
-//[RequireComponent(typeof(Foraging))]
-//[RequireComponent(typeof(Fighting))]
-//[RequireComponent(typeof(Fleeing))]
-//[RequireComponent(typeof(CheckForEnemy))]
-//[RequireComponent(typeof(SpeedBehaviour))]
+[RequireComponent(typeof(AnimalStatus))]
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Idle))]
+[RequireComponent(typeof(Foraging))]
+[RequireComponent(typeof(Fighting))]
+[RequireComponent(typeof(Fleeing))]
+[RequireComponent(typeof(CheckForEnemy))]
+[RequireComponent(typeof(SpeedBehaviour))]
 
 public class AnimalBehaviour : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class AnimalBehaviour : MonoBehaviour
     private Fleeing flee;
     private CheckForEnemy enemyCheck;
 
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -53,13 +55,14 @@ public class AnimalBehaviour : MonoBehaviour
         flee = GetComponent<Fleeing>();
         enemyCheck = GetComponent<CheckForEnemy>();
 
-
         behaviour = Behaviour.Wandering;
 
         DebugBehaviour(transform.localScale.magnitude.ToString());
     }
 
-    
+ 
+
+  
 
     private void Update()
     {
@@ -176,7 +179,27 @@ public class AnimalBehaviour : MonoBehaviour
         
     }
 
+    public void KillAnimal()
+    {
+        Destructor();
+    }
 
-
+    private void Destructor()
+    {
+        Destroy(this);
+        Destroy(agent);
+        Destroy(status);
+        IBehaviour[] behaveModules;
+        behaveModules = GetComponents<IBehaviour>();
+        foreach (IBehaviour module in behaveModules)
+        {
+            Destroy((Object)module);
+        }
+        gameObject.AddComponent<Rigidbody>();
+        CorpseBehaviour corpseComponent = gameObject.AddComponent<CorpseBehaviour>();
+        corpseComponent.stats = status.stats;
+        name += (" (Dead)");
+        gameObject.tag = "Meat";
+    }
 
 }

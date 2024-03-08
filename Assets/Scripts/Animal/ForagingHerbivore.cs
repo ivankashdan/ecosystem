@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ForagingHerbivore : Foraging
 {
+   
+
     public override void SearchForFood()
     {
         List<Transform> foodList;
@@ -22,5 +24,12 @@ public class ForagingHerbivore : Foraging
         status.hunger += food.stats.nutrition;
         food.Eaten();
         animal.RemoveTarget();
+
+        //eating();
+
+        if (GetComponent<Animator>()) //temporary!
+        {
+            GetComponent<Animator>().SetTrigger("Eating");
+        }
     }
 }

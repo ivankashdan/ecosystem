@@ -6,7 +6,7 @@ using UnityEngine.AI;
 //[RequireComponent(typeof(NavMeshAgent))]
 //[RequireComponent(typeof(AnimalStatus))]
 //[RequireComponent(typeof(AnimalBehaviour))]
-public abstract class SearchBehaviour : MonoBehaviour
+public abstract class SearchBehaviour : MonoBehaviour, IBehaviour
 {
 
     protected NavMeshAgent agent;

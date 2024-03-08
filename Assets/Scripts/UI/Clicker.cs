@@ -19,6 +19,7 @@ public class Clicker : MonoBehaviour
             Ray ray = m_Camera.ScreenPointToRay(mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
+                //Debug.Log("hit: " + hit.transform.name);
                 if (hit.collider.GetComponent<AnimalStatus>())
                 {
                     AnimalStatus animal = hit.collider.GetComponent<AnimalStatus>();

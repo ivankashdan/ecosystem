@@ -6,6 +6,11 @@ using UnityEngine.AI;
 public abstract class Foraging : SearchBehaviour
 {
 
+    //emptyFunction eating;
+    //public delegate void emptyFunction();
+    //public event emptyFunction eating;
+
+
     [SerializeField] float searchWait = 2.0f;
     float searchTimePassed = 0;
 

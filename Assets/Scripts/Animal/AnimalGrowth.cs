@@ -31,7 +31,7 @@ public class AnimalGrowth : MonoBehaviour
 
     void UpdateModel() //with animation?
     {
-        //GetComponent<Renderer>().
+
     }
 
 }

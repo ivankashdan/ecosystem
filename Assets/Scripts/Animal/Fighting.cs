@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-
-
-public class Fighting : SearchBehaviour
+public class Fighting : SearchBehaviour, IBehaviour
 {
+    private void Start()
+    {
+        animal = GetComponent<AnimalBehaviour>();
+    }
+
 
     float attackTimePassed = 0;
     
@@ -27,17 +30,25 @@ public class Fighting : SearchBehaviour
     {
         attackTimePassed += Time.deltaTime;
 
-        AnimalStatus prey = target.GetComponent<AnimalStatus>();
-        if (prey.health > 0) //continually update enemy position
+        if (target.GetComponent<AnimalStatus>())
         {
-            agent.destination = target.position; //keep attacking
-            if (attackTimePassed > status.stats.attackDPS)
+            AnimalStatus prey = target.GetComponent<AnimalStatus>();
+            if (prey.health > 0) //continually update enemy position
             {
-                attackTimePassed = 0;
-                //Debug.Log($"Damage = {status.stats.attackStrength}");
-                prey.health -= status.stats.attackStrength;
+                agent.destination = target.position; //keep attacking
+                if (attackTimePassed > status.stats.attackDPS)
+                {
+                    attackTimePassed = 0;
+                    //Debug.Log($"Damage = {status.stats.attackStrength}");
+                    prey.health -= status.stats.attackStrength;
+                }
             }
         }
+        else
+        {
+            animal.RemoveTarget();
+        }
+        
         
     }
 
