@@ -15,6 +15,8 @@ public class Animal : Lifeform
     public float walkSpeedMultiplier;
     public float runSpeedMultiplier;
     public float searchRadius;
+    public GameObject model;
+    //public LifeCycle lifeCycle; 
 }
 
 public enum Diet

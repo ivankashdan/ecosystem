@@ -8,8 +8,8 @@ public class SelectedHUD : MonoBehaviour
     public Text objectName;
     public Slider healthBar; 
     public Slider hungerBar;
-    private AnimalStatus _selected;
-    public AnimalStatus selected //logic for when selected is changed
+    private AnimalBehaviour _selected;
+    public AnimalBehaviour selected //logic for when selected is changed
     {
         get { return _selected; }
         set 
@@ -54,8 +54,8 @@ public class SelectedHUD : MonoBehaviour
     {
         if (selected != null)
         {
-            healthBar.value = (float)selected.health / selected.stats.maxHealth;
-            hungerBar.value = (float)selected.hunger / selected.stats.maxHunger;
+            healthBar.value = (float)selected.status.health / selected.stats.maxHealth;
+            hungerBar.value = (float)selected.status.hunger / selected.stats.maxHunger;
         }
         else
         {

@@ -1,12 +1,10 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Fighting : SearchBehaviour, IBehaviour
+public class Fighting : SearchBehaviour
 {
-    private void Start()
-    {
-        animal = GetComponent<AnimalBehaviour>();
-    }
+
+    public Fighting(ref AnimalBehaviour animal) : base(ref animal) { }
 
 
     float attackTimePassed = 0;
@@ -16,10 +14,10 @@ public class Fighting : SearchBehaviour, IBehaviour
         if (IsTargetStillVisible())
         {
             Transform target = animal.GetTarget();
-            agent.destination = target.position;
+            animal.agent.destination = target.position;
 
             float targetThickness = target.transform.localScale.magnitude / 2;
-            if (agent.remainingDistance < status.stats.attackRange + targetThickness) //collide if inside collider
+            if (animal.agent.remainingDistance < animal.stats.attackRange + targetThickness) //collide if inside collider
             {
                 Strike(target);
             }
@@ -30,17 +28,17 @@ public class Fighting : SearchBehaviour, IBehaviour
     {
         attackTimePassed += Time.deltaTime;
 
-        if (target.GetComponent<AnimalStatus>())
+        if (target.GetComponent<AnimalBehaviour>())
         {
-            AnimalStatus prey = target.GetComponent<AnimalStatus>();
-            if (prey.health > 0) //continually update enemy position
+            AnimalBehaviour prey = target.GetComponent<AnimalBehaviour>();
+            if (prey.status.health > 0) //continually update enemy position
             {
-                agent.destination = target.position; //keep attacking
-                if (attackTimePassed > status.stats.attackDPS)
+                animal.agent.destination = target.position; //keep attacking
+                if (attackTimePassed > animal.stats.attackDPS)
                 {
                     attackTimePassed = 0;
                     //Debug.Log($"Damage = {status.stats.attackStrength}");
-                    prey.health -= status.stats.attackStrength;
+                    prey.status.ChangeHealth(-animal.stats.attackStrength);
                 }
             }
         }

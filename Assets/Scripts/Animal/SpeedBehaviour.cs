@@ -4,27 +4,18 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-//[RequireComponent(typeof(NavMeshAgent))]
-//[RequireComponent(typeof(AnimalStatus))]
-//[RequireComponent(typeof(AnimalBehaviour))]
 
-public class SpeedBehaviour : MonoBehaviour, IBehaviour
+public class SpeedBehaviour : BaseBehaviour
 {
     float baseSpeed;
     float runSpeed;
 
-    NavMeshAgent agent;
-    AnimalStatus status;
-    AnimalBehaviour animal;
-
-    private void Start()
+    public SpeedBehaviour(ref AnimalBehaviour animal) : base(ref animal)
     {
-        agent = GetComponent<NavMeshAgent>();
-        status = GetComponent<AnimalStatus>();
-        animal = GetComponent<AnimalBehaviour>();
-        baseSpeed = agent.speed * status.stats.walkSpeedMultiplier;
-        runSpeed = agent.speed * status.stats.runSpeedMultiplier;
+        baseSpeed = animal.agent.speed * animal.stats.walkSpeedMultiplier;
+        runSpeed = animal.agent.speed * animal.stats.runSpeedMultiplier;
     }
+
 
     void Update() //handle speed 
     {
@@ -32,10 +23,10 @@ public class SpeedBehaviour : MonoBehaviour, IBehaviour
         {
             case Behaviour.Fighting:
             case Behaviour.Fleeing:
-                agent.speed = runSpeed;
+                animal.agent.speed = runSpeed;
                 break;
             default:
-                agent.speed = baseSpeed;
+                animal.agent.speed = baseSpeed;
                 break;
         }
     }

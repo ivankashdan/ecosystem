@@ -20,9 +20,9 @@ public class Clicker : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 //Debug.Log("hit: " + hit.transform.name);
-                if (hit.collider.GetComponent<AnimalStatus>())
+                if (hit.collider.transform.parent.GetComponent<AnimalBehaviour>())
                 {
-                    AnimalStatus animal = hit.collider.GetComponent<AnimalStatus>();
+                    AnimalBehaviour animal = hit.collider.transform.parent.GetComponent<AnimalBehaviour>();
 
                     selectedHUD.selected = animal;
                 }

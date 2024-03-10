@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class ForagingOmnivore : Foraging
 {
-    public override void SearchForFood()
+    public ForagingOmnivore(ref AnimalBehaviour animal) : base(ref animal) { }
+
+    public override void SearchForFood() //instead compile all this from other functions
     {
         List<Transform> foodList;
 
@@ -37,14 +39,14 @@ public class ForagingOmnivore : Foraging
         if (target.CompareTag("Meat"))
         {
             CorpseBehaviour corpse = target.GetComponent<CorpseBehaviour>();
-            status.hunger += corpse.stats.nutrition;
-            Destroy(corpse.gameObject);
+            animal.status.ChangeHunger(corpse.stats.nutrition);
+            corpse.RemoveCorpse();
 
         }
         else if (target.CompareTag("Plant"))
         {
             PlantBehaviour food = target.GetComponent<PlantBehaviour>();
-            status.hunger += food.stats.nutrition;
+            animal.status.ChangeHunger(food.stats.nutrition);
             food.Eaten();
             animal.RemoveTarget();
         }

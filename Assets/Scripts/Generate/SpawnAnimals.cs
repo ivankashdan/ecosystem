@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IBehaviour
+public class SpawnAnimals : MonoBehaviour
 {
-    
+
+    void Start()
+    {
+        
+    }
 }

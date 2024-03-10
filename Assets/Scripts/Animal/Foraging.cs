@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public abstract class Foraging : SearchBehaviour
 {
 
+
     //emptyFunction eating;
     //public delegate void emptyFunction();
     //public event emptyFunction eating;
@@ -14,12 +15,7 @@ public abstract class Foraging : SearchBehaviour
     [SerializeField] float searchWait = 2.0f;
     float searchTimePassed = 0;
 
-    Idle idle;
-
-    void Start()
-    {
-        idle = GetComponent<Idle>();
-    }
+    protected Foraging(ref AnimalBehaviour animal) : base(ref animal) { }
 
     public void Search()
     {
@@ -31,7 +27,7 @@ public abstract class Foraging : SearchBehaviour
 
             SearchForFood();
 
-            idle.ChooseRandomDestination();
+            animal.idle.ChooseRandomDestination();
         }
     }
 
@@ -40,9 +36,9 @@ public abstract class Foraging : SearchBehaviour
         Transform target = animal.GetTarget();
         if (target != null)
         {
-            agent.destination = animal.GetTarget().position;
+            animal.agent.destination = animal.GetTarget().position;
 
-            if (agent.remainingDistance < status.stats.attackRange) //collide if inside collider
+            if (animal.agent.remainingDistance < animal.stats.attackRange) //collide if inside collider
             {
                 EatFood(target);
 

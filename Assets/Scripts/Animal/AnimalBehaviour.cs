@@ -1,15 +1,17 @@
-
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.UI.Image;
 
 public enum Behaviour
 {
     Wandering,
     SearchingForFood,
     Eating,
-    Fighting, 
+    Fighting,
     Fleeing,
 }
 
@@ -20,50 +22,77 @@ public enum Target
     Prey,
     Threat,
 }
-
-[RequireComponent(typeof(AnimalStatus))]
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(Idle))]
-[RequireComponent(typeof(Foraging))]
-[RequireComponent(typeof(Fighting))]
-[RequireComponent(typeof(Fleeing))]
-[RequireComponent(typeof(CheckForEnemy))]
-[RequireComponent(typeof(SpeedBehaviour))]
-
+    
 public class AnimalBehaviour : MonoBehaviour
 {
+
+    protected AnimalBehaviour animal;
     private Behaviour behaviour;
     private Target targetType;
     private Transform target;
 
-    private NavMeshAgent agent;
-    private AnimalStatus status;
-    private Idle idle;
-    private Foraging forage;
-    private Fighting fight;
-    private Fleeing flee;
-    private CheckForEnemy enemyCheck;
+    [SerializeField] public LifeCycle lifeCycle; //need to assign for now
+    [HideInInspector] public NavMeshAgent agent;
+    [HideInInspector] public Renderer model;
+    [HideInInspector] public AnimalStatus status;
+    [HideInInspector] public AnimalGrowth growth;
+    [HideInInspector] public Animal stats;
+    [HideInInspector] public Idle idle;
+    protected Foraging forage;
+    protected Fighting fight;
+    protected Fleeing flee;
+    protected CheckForEnemy enemyCheck;
+    protected SpeedBehaviour speed;
 
-
-    private void Start()
+    private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        status = GetComponent<AnimalStatus>();
-        idle = GetComponent<Idle>();
-        forage = GetComponent<Foraging>();
-        fight = GetComponent<Fighting>();
-        flee = GetComponent<Fleeing>();
-        enemyCheck = GetComponent<CheckForEnemy>();
+        InitDefaultMods();
+        InitGameObject();
+        InitMods();
 
         behaviour = Behaviour.Wandering;
 
-        DebugBehaviour(transform.localScale.magnitude.ToString());
+        DebugBehaviour(transform.localScale.magnitude.ToString()); //animal scale debug
     }
 
- 
+    private void InitDefaultMods() 
+    {
 
-  
+        animal = this;
+        growth = new AnimalGrowth(ref animal);
+        stats = growth.stats;
+        //model = transform.GetChild(0).GetComponent<Renderer>();
+        status = new AnimalStatus(ref animal);
+    }
 
+    void InitGameObject()
+    {
+        gameObject.name = stats.objectName;
+        gameObject.tag = "Animal";
+        agent = gameObject.AddComponent<NavMeshAgent>();
+    }
+
+    void InitMods() 
+    {
+        idle = new Idle(ref animal);
+        switch (stats.diet)
+        {
+            case Diet.Herbavore:
+                forage = new ForagingHerbivore(ref animal);
+                break;
+            case Diet.Carnivore:
+                forage = new ForagingCarnivore(ref animal);
+                break;
+            case Diet.Omnivore:
+                forage = new ForagingOmnivore(ref animal);
+                break;
+        }
+        fight = new Fighting(ref animal);
+        flee = new Fleeing(ref animal);
+        enemyCheck = new CheckForEnemy(ref animal);
+        speed = new SpeedBehaviour(ref animal);
+    }
+    
     private void Update()
     {
         Behaviour lastBehaviour = behaviour;
@@ -143,7 +172,28 @@ public class AnimalBehaviour : MonoBehaviour
         
     }
 
+    protected void OnDrawGizmosSelected()
+    {
+        if (status != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, stats.searchRadius);
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, stats.attackRange);
+        }
+    }
 
+    public void UpdateModel()
+    {
+        //if (transform.GetChild(0))
+        //{
+        //    GameObject oldModel = transform.GetChild(0).gameObject;
+        //    Destroy(oldModel.gameObject);
+        //}
+        //GameObject newModel = Instantiate(stats.model.gameObject, transform);
+        //newModel.name = stats.name;
+        //model = newModel.GetComponent<Renderer>();
+    }
 
     public Behaviour GetBehaviour()
     {
@@ -175,7 +225,7 @@ public class AnimalBehaviour : MonoBehaviour
     void DebugBehaviour(string s)
     {
         
-        Debug.Log($"{status.stats.diet}: " + s);
+        Debug.Log($"{stats.diet}: " + s);
         
     }
 
@@ -186,20 +236,14 @@ public class AnimalBehaviour : MonoBehaviour
 
     private void Destructor()
     {
-        Destroy(this);
-        Destroy(agent);
-        Destroy(status);
-        IBehaviour[] behaveModules;
-        behaveModules = GetComponents<IBehaviour>();
-        foreach (IBehaviour module in behaveModules)
-        {
-            Destroy((Object)module);
-        }
         gameObject.AddComponent<Rigidbody>();
         CorpseBehaviour corpseComponent = gameObject.AddComponent<CorpseBehaviour>();
-        corpseComponent.stats = status.stats;
+        corpseComponent.stats = stats; 
+        model.material.color = status.original;
         name += (" (Dead)");
         gameObject.tag = "Meat";
+        Destroy(agent);
+        Destroy(this);
     }
 
 }

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class ForagingHerbivore : Foraging
 {
-   
+
+    public ForagingHerbivore(ref AnimalBehaviour animal) : base(ref animal) { }
+
 
     public override void SearchForFood()
     {
@@ -21,15 +23,15 @@ public class ForagingHerbivore : Foraging
     protected override void EatFood(Transform target)
     {
         PlantBehaviour food = target.GetComponent<PlantBehaviour>();
-        status.hunger += food.stats.nutrition;
+        animal.status.ChangeHunger(food.stats.nutrition);
         food.Eaten();
         animal.RemoveTarget();
 
-        //eating();
+        //eating(); //need an eating event here!
 
-        if (GetComponent<Animator>()) //temporary!
-        {
-            GetComponent<Animator>().SetTrigger("Eating");
-        }
+        //if (GetComponent<Animator>()) //temporary!
+        //{
+        //    GetComponent<Animator>().SetTrigger("Eating");
+        //}
     }
 }

@@ -12,4 +12,10 @@ public class CorpseBehaviour : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.AddForce(Vector3.forward, ForceMode.Impulse);
     }
+
+    public void RemoveCorpse()
+    {
+        Destroy(gameObject);
+    }
+
 }

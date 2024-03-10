@@ -1,24 +1,11 @@
 
 using UnityEngine;
-using UnityEngine.AI;
-
-
-//[RequireComponent(typeof(NavMeshAgent))]
-//[RequireComponent(typeof(AnimalStatus))]
-public class Idle : MonoBehaviour, IBehaviour
+public class Idle : BaseBehaviour
 {
-
+    public Idle(ref AnimalBehaviour animal) : base(ref animal) { }
+   
     [SerializeField] float wanderWait = 5.0f;
     float wanderTimePassed = 0;
-
-    NavMeshAgent agent;
-    AnimalStatus status;
-
-    private void Start()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        status = GetComponent<AnimalStatus>();
-    }
 
     public void Wander()
     {
@@ -28,7 +15,7 @@ public class Idle : MonoBehaviour, IBehaviour
         {
             wanderTimePassed = 0;
 
-            if (agent.remainingDistance < 0.1f)
+            if (animal.agent.remainingDistance < 0.1f)
             {
                 ChooseRandomDestination();
             }
@@ -38,6 +25,7 @@ public class Idle : MonoBehaviour, IBehaviour
 
     public void ChooseRandomDestination()
     {
-        agent.destination = transform.position + (Random.insideUnitSphere * status.stats.searchRadius);
+        Vector3 randomPos = Random.insideUnitSphere * animal.stats.searchRadius;
+        animal.agent.destination = animal.transform.position + randomPos;
     }
 }

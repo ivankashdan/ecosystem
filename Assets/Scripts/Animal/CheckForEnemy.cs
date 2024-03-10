@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckForEnemy : SearchBehaviour, IBehaviour
+public class CheckForEnemy : SearchBehaviour
 {
+    public CheckForEnemy(ref AnimalBehaviour animal) : base(ref animal) { }
+    
+
     [SerializeField] float searchPredatorWait = 1.0f;
     float searchPredatorTimePassed = 0;
 
     public void Search()
-    {
+    {   
         searchPredatorTimePassed += Time.deltaTime;
 
         if (searchPredatorTimePassed > searchPredatorWait)
@@ -54,7 +57,7 @@ public class CheckForEnemy : SearchBehaviour, IBehaviour
 
     bool IsOtherPredator(Transform other)
     {
-        Diet otherDiet = other.GetComponent<AnimalStatus>().stats.diet;
+        Diet otherDiet = other.GetComponent<AnimalBehaviour>().stats.diet;
         if (otherDiet == Diet.Carnivore || otherDiet == Diet.Omnivore)
         {
             return true;

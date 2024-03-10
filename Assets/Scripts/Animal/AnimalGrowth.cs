@@ -2,36 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimalGrowth : MonoBehaviour
+public class AnimalGrowth : BaseBehaviour
 {
 
-    [SerializeField] List<Animal> lifeCycle;
+    [HideInInspector] public float growRate = 2f;
     [HideInInspector] public Animal stats;
-    [SerializeField] GameObject deadState;
     int lifeCycleStage = 0;
 
-    float growRate = 10f;
-    private void Start()
+   
+
+    public AnimalGrowth(ref AnimalBehaviour animal ) : base(ref animal)
     {
-        stats = lifeCycle[lifeCycleStage];
-        StartCoroutine(Grow());
+        stats = animal.lifeCycle.lifeCycle[lifeCycleStage];
+        animal.StartCoroutine(Grow());
     }
 
     IEnumerator Grow()
     {
-        while (true)
+        while (lifeCycleStage != animal.lifeCycle.lifeCycle.Count)
         {
-            if (stats != lifeCycle[lifeCycle.Count - 1])
-            {
-                stats = lifeCycle[lifeCycleStage++];
-            }
+            stats = animal.lifeCycle.lifeCycle[lifeCycleStage++];
+            animal.UpdateModel();
+            Debug.Log("Grew!");
             yield return new WaitForSeconds(growRate);
         }
     }
 
-    void UpdateModel() //with animation?
-    {
-
-    }
+  
 
 }

@@ -1,41 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 
-//[RequireComponent(typeof(NavMeshAgent))]
-//[RequireComponent(typeof(AnimalStatus))]
-//[RequireComponent(typeof(AnimalBehaviour))]
-public abstract class SearchBehaviour : MonoBehaviour, IBehaviour
+public abstract class SearchBehaviour : BaseBehaviour
 {
-
-    protected NavMeshAgent agent;
-    protected AnimalStatus status;
-    protected AnimalBehaviour animal;
-
-    protected void Awake()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        status = GetComponent<AnimalStatus>();
-        animal = GetComponent<AnimalBehaviour>();
-    }
-
-    protected void OnDrawGizmosSelected()
-    {
-        if (status!=null)
-        {
-
-            AnimalStatus status = GetComponent<AnimalStatus>();
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, status.stats.searchRadius);
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, status.stats.attackRange);
-        }
-    }
+    protected SearchBehaviour(ref AnimalBehaviour animal) : base(ref animal) { }
 
     protected bool IsOtherBigger(Transform other)
     {
-        float ownSize = transform.localScale.magnitude;
+        float ownSize = animal.transform.localScale.magnitude;
         float otherSize = other.transform.localScale.magnitude;
 
         if (otherSize >= ownSize)
@@ -47,8 +20,8 @@ public abstract class SearchBehaviour : MonoBehaviour, IBehaviour
 
     protected bool IsTargetStillVisible()
     {
-        float distance = Vector3.Distance(transform.position, animal.GetTarget().position);
-        if (distance > status.stats.searchRadius)
+        float distance = Vector3.Distance(animal.transform.position, animal.GetTarget().position);
+        if (distance > animal.stats.searchRadius)
         {
             animal.RemoveTarget();
             return false;
@@ -58,12 +31,12 @@ public abstract class SearchBehaviour : MonoBehaviour, IBehaviour
 
     protected Transform FindClosest(List<Transform> hitList)
     {
-        float closestDistance = status.stats.searchRadius;
+        float closestDistance = animal.stats.searchRadius;
         Transform closestTarget = null;
 
         foreach (Transform hit in hitList)
         {
-            float distance = Vector3.Distance(hit.position, this.transform.position);
+            float distance = Vector3.Distance(hit.position, animal.transform.position);
 
             if (distance < closestDistance)
             {
@@ -91,7 +64,7 @@ public abstract class SearchBehaviour : MonoBehaviour, IBehaviour
 
             foreach (Collider collider in colliders)
             {
-                if (collider.transform != this.transform) //check it's not self!
+                if (collider.transform != animal.transform) //check it's not self!
                 {
                     if (collider.CompareTag(tag))
                     {
@@ -111,7 +84,7 @@ public abstract class SearchBehaviour : MonoBehaviour, IBehaviour
 
     Collider[] SurroundingObjects()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, status.stats.searchRadius); //search all colliders in sphere
+        Collider[] hitColliders = Physics.OverlapSphere(animal.transform.position, animal.stats.searchRadius); //search all colliders in sphere
 
         if (hitColliders.Length > 0)
         {

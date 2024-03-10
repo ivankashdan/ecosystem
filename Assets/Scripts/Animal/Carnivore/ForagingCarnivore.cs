@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ForagingCarnivore : Foraging
 {
+    public ForagingCarnivore(ref AnimalBehaviour animal) : base(ref animal) { }
 
     public override void SearchForFood()
     {
@@ -30,8 +31,8 @@ public class ForagingCarnivore : Foraging
     protected override void EatFood(Transform target)
     {
         CorpseBehaviour corpse = target.GetComponent<CorpseBehaviour>();
-        status.hunger += corpse.stats.nutrition;
-        Destroy(corpse.gameObject);
+        animal.status.ChangeHunger(corpse.stats.nutrition);
+        corpse.RemoveCorpse();
     }
 
     List<Transform> CheckForSmaller(List<Transform> foodList)

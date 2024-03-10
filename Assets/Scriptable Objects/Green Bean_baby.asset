@@ -24,3 +24,4 @@ MonoBehaviour:
   walkSpeedMultiplier: 1
   runSpeedMultiplier: 1.5
   searchRadius: 6
+  model: {fileID: 44723060264379778, guid: 846a04f17383a7f478bc76eaa45fe5cf, type: 3}

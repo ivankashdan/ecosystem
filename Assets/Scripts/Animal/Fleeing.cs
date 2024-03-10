@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Fleeing : SearchBehaviour, IBehaviour
+public class Fleeing : SearchBehaviour
 {
     [SerializeField] float fleeDistanceMultiplier = 30.0f;
     [SerializeField] float fleeWait = 2.0f;
     float fleeTimePassed = 0;
 
-    private void Start()
+    public Fleeing(ref AnimalBehaviour animal) : base(ref animal) 
     {
         fleeTimePassed = fleeWait;
     }
@@ -26,7 +26,7 @@ public class Fleeing : SearchBehaviour, IBehaviour
             {
                 Transform target = animal.GetTarget();
 
-                agent.destination = (transform.position - target.position).normalized * fleeDistanceMultiplier;
+                animal.agent.destination = (animal.transform.position - target.position).normalized * fleeDistanceMultiplier;
 
             }
         }
