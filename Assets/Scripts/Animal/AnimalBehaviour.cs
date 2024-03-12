@@ -31,12 +31,14 @@ public class AnimalBehaviour : MonoBehaviour
     private Target targetType;
     private Transform target;
 
-    [SerializeField] public LifeCycle lifeCycle; //need to assign for now
-    [HideInInspector] public NavMeshAgent agent;
-    [HideInInspector] public Renderer model;
-    [HideInInspector] public AnimalStatus status;
-    [HideInInspector] public AnimalGrowth growth;
+    GameObject model;
+    [SerializeField] List<Animal> lifeCycle; //need to assign for now
     [HideInInspector] public Animal stats;
+    [HideInInspector] int growRate = 10;
+    int lifeCycleStage = 0;
+
+    [HideInInspector] public NavMeshAgent agent;
+    [HideInInspector] public AnimalStatus status;
     [HideInInspector] public Idle idle;
     protected Foraging forage;
     protected Fighting fight;
@@ -46,6 +48,7 @@ public class AnimalBehaviour : MonoBehaviour
 
     private void Awake()
     {
+        InitGrowth();
         InitDefaultMods();
         InitGameObject();
         InitMods();
@@ -55,13 +58,20 @@ public class AnimalBehaviour : MonoBehaviour
         DebugBehaviour(transform.localScale.magnitude.ToString()); //animal scale debug
     }
 
+    private void InitGrowth()
+    {
+        if (transform.GetChild(0))
+        {
+            model = transform.GetChild(0).gameObject;
+        }
+
+        stats = lifeCycle[lifeCycleStage];
+        StartCoroutine(Grow());
+    }
+
     private void InitDefaultMods() 
     {
-
         animal = this;
-        growth = new AnimalGrowth(ref animal);
-        stats = growth.stats;
-        //model = transform.GetChild(0).GetComponent<Renderer>();
         status = new AnimalStatus(ref animal);
     }
 
@@ -98,6 +108,7 @@ public class AnimalBehaviour : MonoBehaviour
         Behaviour lastBehaviour = behaviour;
         Transform lastTarget = target;
 
+        status.Needs();
         enemyCheck.Search(); //keeping searching behaviour on always (???)
 
         if (target == null)
@@ -183,17 +194,31 @@ public class AnimalBehaviour : MonoBehaviour
         }
     }
 
+    IEnumerator Grow()
+    {
+        while (lifeCycleStage != lifeCycle.Count)
+        {
+            stats = lifeCycle[lifeCycleStage++];
+            UpdateModel();
+            Debug.Log("Grew!");
+            yield return new WaitForSecondsRealtime(growRate);
+        }
+    }
+
+
     public void UpdateModel()
     {
-        //if (transform.GetChild(0))
-        //{
-        //    GameObject oldModel = transform.GetChild(0).gameObject;
-        //    Destroy(oldModel.gameObject);
-        //}
-        //GameObject newModel = Instantiate(stats.model.gameObject, transform);
-        //newModel.name = stats.name;
-        //model = newModel.GetComponent<Renderer>();
+        if (model)
+        {
+            Destroy(model.gameObject);
+        }
+
+        model = Instantiate(stats.model, transform);
+        model.name = "GFX";
+        name = stats.objectName;
     }
+
+
 
     public Behaviour GetBehaviour()
     {
@@ -239,11 +264,12 @@ public class AnimalBehaviour : MonoBehaviour
         gameObject.AddComponent<Rigidbody>();
         CorpseBehaviour corpseComponent = gameObject.AddComponent<CorpseBehaviour>();
         corpseComponent.stats = stats; 
-        model.material.color = status.original;
+        //model.material.color = status.original;
         name += (" (Dead)");
         gameObject.tag = "Meat";
         Destroy(agent);
         Destroy(this);
     }
 
+   
 }

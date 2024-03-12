@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca180669c12b26746b5a4fa7bcdbf7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawn: {fileID: 44723060264379778, guid: a2101500accac624392850faaf8a49ba, type: 3}
 --- !u!4 &353960804
 Transform:
   m_ObjectHideFlags: 0
@@ -772,6 +773,63 @@ MonoBehaviour:
   rowLength: 14
   columnLength: 46
   interval: 2
+--- !u!1001 &1998154064
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1097378987702912020, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.32905483
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097378987702912020, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097378987702912020, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.5409837
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097378987702912020, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097378987702912020, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097378987702912020, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097378987702912020, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097378987702912020, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097378987702912020, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097378987702912020, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7361794542689805791, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
+      propertyPath: m_Name
+      value: Carnivore
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 20787c7570bcfe9498dcd3054a938c32, type: 3}
 --- !u!114 &79801471076084593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1953,3 +2011,4 @@ SceneRoots:
   - {fileID: 3522429080998702070}
   - {fileID: 353960804}
   - {fileID: 928894889}
+  - {fileID: 1998154064}

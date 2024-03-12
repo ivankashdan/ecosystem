@@ -45,10 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ad5248b62a29548a7d73fb6ff4f467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeCycle: {fileID: 11400000, guid: 9b05440c9c485e549ba3ee915c0fcac7, type: 2}
-  agent: {fileID: 0}
-  model: {fileID: 0}
+  lifeCycle:
+  - {fileID: 11400000, guid: 37359100014491e49b9234ed83f4d915, type: 2}
+  - {fileID: 11400000, guid: 5fefab8a533961846b6a0e930c28c13f, type: 2}
   stats: {fileID: 0}
+  growRate: 2
+  agent: {fileID: 0}
 --- !u!1001 &8143422037098223686
 PrefabInstance:
   m_ObjectHideFlags: 0

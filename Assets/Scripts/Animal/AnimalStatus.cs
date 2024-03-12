@@ -51,7 +51,7 @@ public class AnimalStatus : BaseBehaviour
 
     }
 
-    private void Update()
+    public void Needs()
     {
         if (hunger <= 0)
         {
