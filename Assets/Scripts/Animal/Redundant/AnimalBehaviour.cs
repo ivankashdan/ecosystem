@@ -6,22 +6,22 @@ using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.UI.Image;
 
-public enum Behaviour
-{
-    Wandering,
-    SearchingForFood,
-    Eating,
-    Fighting,
-    Fleeing,
-}
+//public enum Behaviour
+//{
+//    Wandering,
+//    SearchingForFood,
+//    Eating,
+//    Fighting,
+//    Fleeing,
+//}
 
-public enum Target
-{
-    None,
-    Food,
-    Prey,
-    Threat,
-}
+//public enum Target
+//{
+//    None,
+//    Food,
+//    Prey,
+//    Threat,
+//}
     
 public class AnimalBehaviour : MonoBehaviour
 {
@@ -208,14 +208,14 @@ public class AnimalBehaviour : MonoBehaviour
 
     public void UpdateModel()
     {
-        if (model)
-        {
-            Destroy(model.gameObject);
-        }
+        //if (model)
+        //{
+        //    Destroy(model.gameObject);
+        //}
 
-        model = Instantiate(stats.model, transform);
-        model.name = "GFX";
-        name = stats.objectName;
+        //model = Instantiate(stats.model, transform);
+        //model.name = "GFX";
+        //name = stats.objectName;
     }
 
 

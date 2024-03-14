@@ -16,6 +16,9 @@ public class Animal : Lifeform
     public float runSpeedMultiplier;
     public float searchRadius;
     public GameObject model;
+    //public MeshRenderer mesh;
+    //public Material material;
+    //public Collider collider;
     //public LifeCycle lifeCycle; 
 }
 
