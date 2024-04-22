@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine.UI;
 
 public class SelectedHUD : MonoBehaviour
 {
+    public CinemachineFreeLook freeLookCam; //
+
+
     public Text objectName;
     public Slider healthBar; 
     public Slider hungerBar;
@@ -31,7 +35,11 @@ public class SelectedHUD : MonoBehaviour
             else
             {
                 objectName.text = _selected.stats.objectName; //set selected name
-           
+
+                freeLookCam.Follow = _selected.transform; //new lines
+                freeLookCam.LookAt = _selected.transform; //
+
+
                 //HighlightObject();
                 Show();
             }

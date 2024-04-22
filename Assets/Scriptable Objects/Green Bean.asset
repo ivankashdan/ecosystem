@@ -22,5 +22,5 @@ MonoBehaviour:
   attackRange: 1
   attackDPS: 2
   walkSpeedMultiplier: 1
-  runSpeedMultiplier: 2
+  runSpeedMultiplier: 1.5
   searchRadius: 6
